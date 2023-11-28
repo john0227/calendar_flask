@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .current-month {
+      background-color: #e6e6e6; /* Light gray background for days of the current month */
+    }
+
+    .other-month {
+      color: #a0a0a0; /* Gray text color for days of adjacent months */
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Calendar for {{ current_date.strftime('%B %Y') }}</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th>Sun</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for week in this_cal %}
+        <tr>
+          {% for day in week %}
+            {% if day == -1 %}
+                <td class="other-month">{{ other_cal[0][loop.index0] }}</td>
+            {% elif day == -2 %}
+                <td class="other-month">{{ other_cal[1][loop.index0] }}</td>
+            {% else %}
+                <td class="current-month">{{ day }}</td>
+            {% endif %}
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</body>
+</html>
