@@ -27,6 +27,10 @@
     .other-month {
       color: #a0a0a0; /* Gray text color for days of adjacent months */
     }
+
+    .calendar-cell {
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -50,17 +54,33 @@
         <tr>
           {% for day in week %}
             {% if day == -1 %}
-                <td class="other-month">{{ other_cal[0][loop.index0] }}</td>
+              <td class="other-month">{{ other_cal[0][loop.index0] }}</td>
             {% elif day == -2 %}
-                <td class="other-month">{{ other_cal[1][loop.index0] }}</td>
+              <td class="other-month">{{ other_cal[1][loop.index0] }}</td>
             {% else %}
-                <td class="current-month">{{ day }}</td>
+              <td class="calendar-cell current-month" data-date="{{ current_date.replace(day=day).strftime('%Y-%m-%d') }}">{{ day }}</td>
             {% endif %}
           {% endfor %}
         </tr>
       {% endfor %}
     </tbody>
   </table>
+
+  <form method="POST" action="{{ url_for('add_schedule') }}" id="schedule-form" style="display: none;">
+    <h3>Add Schedule</h3>
+    <div>
+      <label for="date-input">Date:</label>
+      <input type="text" id="date-input" name="date" readonly>
+    </div>
+    <div>
+      <label for="event-name">Event Name:</label>
+      <input type="text" id="event-name" name="event_name">
+    </div>
+    <button type="submit">Add</button>
+    <button type="submit" name="cancel">Cancel</button>
+  </form>
+
+  <script src="{{ url_for('static', filename='js/calendar.js') }}"></script>  
 
 </body>
 </html>

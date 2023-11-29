@@ -7,7 +7,6 @@ Calendar = List[List[int]]
 
 def get_calendar(date: datetime) -> Tuple[Calendar, Calendar]:
     cal = calendar.monthcalendar(date.year, date.month)
-    print(cal)
     for i, week in enumerate(cal):
         for j, day in enumerate(week):
             if day == 0:
