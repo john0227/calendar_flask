@@ -73,8 +73,13 @@
       <input type="text" id="date-input" name="date" readonly>
     </div>
     <div>
-      <label for="event-name">Event Name:</label>
-      <input type="text" id="event-name" name="event_name">
+      <label for="schedule-name">Schedule Name:</label>
+      <input type="text" id="schedule-name" name="schedule_name">
+    </div>
+    <div>
+      <input type="time" id="sch-start" name="sch_start" min="00:00" max="23:59" required />
+      <object hspace="15"> - </object>
+      <input type="time" id="sch-end" name="sch_end" min="00:00" max="23:59" required />
     </div>
     <button type="submit">Add</button>
     <button type="submit" name="cancel">Cancel</button>
