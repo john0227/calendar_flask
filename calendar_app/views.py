@@ -31,9 +31,6 @@ def cache_db(date: datetime.datetime):
         cache_schedules[sch.date].append(sch)
 
 @app.get('/')
-def index():
-    this_cal, other_cal = my_calendar.get_calendar(now)
-    return render_template('calendar.html', this_cal=this_cal, other_cal=other_cal, current_date=now)
 def index(date=None):
     '''
     Displays calendar for the month of given date
@@ -42,12 +39,21 @@ def index(date=None):
     if not date:
         date = datetime.datetime.now()
     cache_db(date)
+    calendar = my_calendar.get_calendar(date, cache_schedules)
+    return render_template('calendar.html', calendar=calendar, current_date=date)
 
 @app.post('/add_schedule')
 def add_schedule():
-    # ImmutableMultiDict([('date', '2023-12-14'), ('schedule_name', 'adfasdf'), ('sch_start', '23:59'), ('sch_end', '23:59')])
+    # Example request.form
+    # {
+    #     'date': '2023-12-14',
+    #     'schedule_name': 'My Schedule',
+    #     'sch_start': '08:00',
+    #     'sch_end', '09:00'
+    # }
+
     new_sch = Schedule(
-        name=request.form['schedule_name'],
+        name=request.form['schedule_name'] or 'My Event',  # if empty, default name is "My Event"
         date=int(request.form['date'].replace('-', '')),
         start_time=int(request.form['sch_start'].replace(':', '')),
         end_time=int(request.form['sch_end'].replace(':', ''))

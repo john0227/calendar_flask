@@ -50,15 +50,13 @@
       </tr>
     </thead>
     <tbody>
-      {% for week in this_cal %}
+      {% for week in calendar %}
         <tr>
           {% for day in week %}
-            {% if day == -1 %}
-              <td class="other-month">{{ other_cal[0][loop.index0] }}</td>
-            {% elif day == -2 %}
-              <td class="other-month">{{ other_cal[1][loop.index0] }}</td>
+            {% if day.in_view %}
+              <td class="calendar-cell current-month" data-date="{{ day.date_str }}">{{ day.day }}</td>
             {% else %}
-              <td class="calendar-cell current-month" data-date="{{ current_date.replace(day=day).strftime('%Y-%m-%d') }}">{{ day }}</td>
+              <td class="other-month">{{ day.day }}</td>
             {% endif %}
           {% endfor %}
         </tr>
