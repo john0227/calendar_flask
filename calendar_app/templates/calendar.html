@@ -8,15 +8,16 @@
     table {
       width: 100%;
       border-collapse: collapse;
+      table-layout: fixed;
     }
 
     th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
       text-align: center;
+      padding: 1.5px;
     }
 
     th {
+      border: 1px solid #aaa;
       background-color: #f2f2f2;
     }
 
@@ -51,15 +52,23 @@
     </thead>
     <tbody>
       {% for week in calendar %}
-        <tr>
-          {% for day in week %}
-            {% if day.in_view %}
-              <td class="calendar-cell current-month" data-date="{{ day.date_str }}">{{ day.day }}</td>
-            {% else %}
-              <td class="other-month">{{ day.day }}</td>
-            {% endif %}
-          {% endfor %}
-        </tr>
+        {% for i in range(7) %}
+          <tr>
+            {% for day in week %}
+              {% if i == 0 %}
+                <td class="calendar-cell {{ 'current-month' if day.in_view else 'other-month' }}" data-date="{{ day.date_str }}" style="border: 1px solid #aaa; border-bottom: none">{{ day.day }}</td>
+              {% elif i == 6 %}
+                <td class="calendar-cell {{ 'current-month' if day.in_view else 'other-month' }}" data-date="{{ day.date_str }}" style="border: 1px solid #aaa; border-top: none">&nbsp;</td>
+              {% else %}
+                {% if i - 1 < day.schedules|length %}
+                  <td class="calendar-cell {{ 'current-month' if day.in_view else 'other-month' }}" style="border-left: 1px solid #aaa; border-right: 1px solid #aaa"><div style="background-color: rgba(255, 0, 0, 0.7)">{{ day.schedules[i - 1].name }}</div></td>
+                {% else %}
+                  <td class="calendar-cell {{ 'current-month' if day.in_view else 'other-month' }}" data-date="{{ day.date_str }}" style="border-left: 1px solid #aaa; border-right: 1px solid #aaa">&nbsp;</td>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </tr>
+        {% endfor %}
       {% endfor %}
     </tbody>
   </table>

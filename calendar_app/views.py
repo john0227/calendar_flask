@@ -51,13 +51,20 @@ def add_schedule():
     #     'sch_start': '08:00',
     #     'sch_end', '09:00'
     # }
-
+    date = int(request.form['date'].replace('-', ''))
     new_sch = Schedule(
         name=request.form['schedule_name'] or 'My Event',  # if empty, default name is "My Event"
-        date=int(request.form['date'].replace('-', '')),
+        date=date,
         start_time=int(request.form['sch_start'].replace(':', '')),
         end_time=int(request.form['sch_end'].replace(':', ''))
     )
+
+    # Add to DB
     db.session.add(new_sch)
     db.session.commit()
+
+    # Update cached schedules
+    db.session.refresh(new_sch)
+    cache_schedules[date].append(new_sch)
+
     return redirect(url_for('index'))
