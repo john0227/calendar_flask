@@ -17,6 +17,11 @@ class Schedule(db.Model):
     start_time = db.Column(db.Integer)  # HHMM (4 digit integer, 24 hour format)
     end_time = db.Column(db.Integer)  # HHMM (4 digit integer, 24 hour format)
 
+    def __repr__(self):
+        stime = str(self.start_time).zfill(4)
+        etime = str(self.end_time).zfill(4)
+        return f'[{self.date}] {self.name} ({stime} - {etime})'
+
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255))
